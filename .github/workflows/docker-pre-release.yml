@@ -1,0 +1,25 @@
+name: Create Docker Pre-Release
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  get-short-sha:
+    runs-on: ubuntu-latest
+    outputs:
+      short_sha: ${{ steps.sha.outputs.short_sha }}
+    steps:
+      - name: Get short SHA
+        id: sha
+        run: echo "short_sha=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+
+  call-build:
+    uses: ./.github/workflows/docker-build.yml
+    needs: get-short-sha
+    with:
+      image_tag: pre-release-${{ needs.get-short-sha.outputs.short_sha }}
+    secrets:
+      DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+      DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}

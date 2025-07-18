@@ -1,0 +1,16 @@
+name: Create Docker Release
+
+on:
+  push:
+    tags:
+      - "*"
+
+jobs:
+  call-build:
+    uses: ./.github/workflows/docker-build.yml
+    with:
+      image_tag: ${{ github.ref_name }}
+      also_tag_latest: true
+    secrets:
+      DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+      DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
