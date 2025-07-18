@@ -10,6 +10,11 @@ on:
         required: false
         type: boolean
         default: false
+    secrets:
+      DOCKER_USERNAME:
+        required: true
+      DOCKER_PASSWORD:
+        required: true
 
 jobs:
   docker-build:
