@@ -43,12 +43,3 @@ jobs:
           tags: |
             alexandrevsd/kepler:${{ inputs.image_tag }}
             ${{ inputs.also_tag_latest && 'alexandrevsd/kepler:latest' || '' }}
-
-      - name: Update Docker Hub description
-        uses: peter-evans/dockerhub-description@v3
-        with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
-          repository: alexandrevsd/kepler
-          short-description: "Kepler Server – multi-platform Docker image"
-          readme-filepath: ./README.md
