@@ -6,11 +6,13 @@ import org.alexdev.kepler.Kepler;
 import org.alexdev.kepler.dao.mysql.CurrencyDao;
 import org.alexdev.kepler.dao.mysql.PlayerDao;
 import org.alexdev.kepler.game.player.Player;
+import org.alexdev.kepler.game.catalogue.CatalogueManager;
 import org.alexdev.kepler.game.room.Room;
 import org.alexdev.kepler.game.room.RoomManager;
 import org.alexdev.kepler.game.player.PlayerDetails;
 import org.alexdev.kepler.game.player.PlayerManager;
 import org.alexdev.kepler.log.Log;
+import org.alexdev.kepler.messages.outgoing.catalogue.CATALOGUE_PAGES;
 import org.alexdev.kepler.messages.outgoing.user.ALERT;
 import org.alexdev.kepler.messages.outgoing.rooms.user.FIGURE_CHANGE;
 import org.alexdev.kepler.messages.outgoing.user.USER_OBJECT;
@@ -173,6 +175,16 @@ public class RconConnectionHandler extends ChannelInboundHandlerAdapter {
                         }
 
                         room.send(new ALERT(roomAlert.toString()));
+                    }
+
+                    break;
+                case REFRESH_CATALOGUE:
+                    CatalogueManager.reset();
+
+                    for (Player player : PlayerManager.getInstance().getPlayers()) {
+                        player.send(new CATALOGUE_PAGES(
+                                CatalogueManager.getInstance().getPagesForRank(player.getDetails().getRank(), player.getDetails().hasClubSubscription())
+                        ));
                     }
 
                     break;
