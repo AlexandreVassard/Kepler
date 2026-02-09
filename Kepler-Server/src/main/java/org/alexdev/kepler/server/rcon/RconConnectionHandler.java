@@ -6,6 +6,8 @@ import org.alexdev.kepler.Kepler;
 import org.alexdev.kepler.dao.mysql.CurrencyDao;
 import org.alexdev.kepler.dao.mysql.PlayerDao;
 import org.alexdev.kepler.game.player.Player;
+import org.alexdev.kepler.game.room.Room;
+import org.alexdev.kepler.game.room.RoomManager;
 import org.alexdev.kepler.game.player.PlayerDetails;
 import org.alexdev.kepler.game.player.PlayerManager;
 import org.alexdev.kepler.log.Log;
@@ -153,6 +155,24 @@ public class RconConnectionHandler extends ChannelInboundHandlerAdapter {
 
                     if (online != null) {
                         online.kickFromServer();
+                    }
+
+                    break;
+                case ROOM_ALERT:
+                    Room room = RoomManager.getInstance().getRoomById(Integer.parseInt(message.getValues().get("roomId")));
+
+                    if (room != null && room.isActive()) {
+                        StringBuilder roomAlert = new StringBuilder();
+                        roomAlert.append(message.getValues().get("message"));
+
+                        if (message.getValues().containsKey("sender")) {
+                            String messageSender = message.getValues().get("sender");
+                            roomAlert.append("<br>");
+                            roomAlert.append("<br>");
+                            roomAlert.append("- ").append(messageSender);
+                        }
+
+                        room.send(new ALERT(roomAlert.toString()));
                     }
 
                     break;
