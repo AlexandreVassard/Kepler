@@ -12,6 +12,7 @@ $commands = [
     'user_alert'      => ['userId', 'message', 'sender'],
     'disconnect_user' => ['userId'],
     'room_alert'      => ['roomId', 'message', 'sender'],
+    'refresh_catalogue' => [],
 ];
 
 $result = null;
