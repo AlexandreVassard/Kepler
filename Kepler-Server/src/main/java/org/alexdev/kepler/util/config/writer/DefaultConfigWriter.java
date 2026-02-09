@@ -17,6 +17,7 @@ public class DefaultConfigWriter implements ConfigWriter {
 
         config.put("rcon.bind", "127.0.0.1");
         config.put("rcon.port", "12309");
+        config.put("rcon.secret", "");
 
         config.put("log.connections", "true");
         config.put("log.sent.packets", "false");
@@ -41,6 +42,7 @@ public class DefaultConfigWriter implements ConfigWriter {
         writer.println("[Rcon]");
         writer.println("rcon.bind=" + config.get("rcon.bind"));
         writer.println("rcon.port=" + config.get("rcon.port"));
+        writer.println("rcon.secret=" + config.get("rcon.secret"));
         writer.println("");
         writer.println("[Mus]");
         writer.println("mus.bind=" + config.get("mus.bind"));

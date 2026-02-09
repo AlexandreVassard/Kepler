@@ -1,27 +1,35 @@
 <?php
 
+$secret = "changeme"; // Must match rcon.secret in server.ini
+
 sendRcon("127.0.0.1", "12309", build("hotel_alert", array(
+   "secret" => $secret,
    "message" => "Hello, World!",
    "sender" => "Alex"
 )));
 
 sendRcon("127.0.0.1", "12309", build("hotel_alert", array(
+   "secret" => $secret,
    "message" => "Hello, World!"
 )));
 
 sendRcon("127.0.0.1", "12309", build("refresh_looks", array(
+   "secret" => $secret,
    "userId" => "1"
 )));
 
 sendRcon("127.0.0.1", "12309", build("refresh_hand", array(
+   "secret" => $secret,
    "userId" => "1"
 )));
 
 sendRcon("127.0.0.1", "12309", build("refresh_club", array(
+   "secret" => $secret,
    "userId" => "1"
 )));
 
 sendRcon("127.0.0.1", "12309", build("refresh_credits", array(
+   "secret" => $secret,
    "userId" => "1"
 )));
 

@@ -12,10 +12,13 @@ import org.alexdev.kepler.log.Log;
 import org.alexdev.kepler.messages.outgoing.user.ALERT;
 import org.alexdev.kepler.messages.outgoing.user.currencies.CREDIT_BALANCE;
 import org.alexdev.kepler.server.rcon.messages.RconMessage;
+import org.alexdev.kepler.util.config.ServerConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
 
 public class RconConnectionHandler extends ChannelInboundHandlerAdapter {
     final private static Logger log = LoggerFactory.getLogger(RconConnectionHandler.class);
@@ -50,6 +53,20 @@ public class RconConnectionHandler extends ChannelInboundHandlerAdapter {
 
         RconMessage message = (RconMessage) msg;
         //log.info("[RCON] Message received: " + message.getHeader());
+
+        String configuredSecret = ServerConfiguration.getStringOrDefault("rcon.secret", "");
+
+        if (configuredSecret != null && !configuredSecret.isBlank()) {
+            String providedSecret = message.getValues().getOrDefault("secret", "");
+
+            if (!MessageDigest.isEqual(
+                    configuredSecret.getBytes(StandardCharsets.UTF_8),
+                    providedSecret.getBytes(StandardCharsets.UTF_8))) {
+                Log.getErrorLogger().error("[RCON] Authentication failed from {}", ctx.channel().remoteAddress());
+                ctx.close();
+                return;
+            }
+        }
 
         try {
             switch (message.getHeader()) {
