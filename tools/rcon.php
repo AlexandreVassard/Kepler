@@ -10,6 +10,7 @@ $commands = [
     'refresh_credits' => ['userId'],
     'refresh_motto'   => ['userId'],
     'user_alert'      => ['userId', 'message', 'sender'],
+    'disconnect_user' => ['userId'],
 ];
 
 $result = null;

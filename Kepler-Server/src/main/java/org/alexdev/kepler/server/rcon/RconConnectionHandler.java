@@ -148,6 +148,14 @@ public class RconConnectionHandler extends ChannelInboundHandlerAdapter {
                     }
 
                     break;
+                case DISCONNECT_USER:
+                    online = PlayerManager.getInstance().getPlayerById(Integer.parseInt(message.getValues().get("userId")));
+
+                    if (online != null) {
+                        online.kickFromServer();
+                    }
+
+                    break;
             }
         } catch (Exception ex) {
             Log.getErrorLogger().error("[RCON] Error occurred when handling RCON message: ", ex);
