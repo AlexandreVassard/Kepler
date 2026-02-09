@@ -8,7 +8,8 @@ public enum RconHeader {
     REFRESH_CREDITS("refresh_credits"),
     REFRESH_MOTTO("refresh_motto"),
     USER_ALERT("user_alert"),
-    DISCONNECT_USER("disconnect_user");
+    DISCONNECT_USER("disconnect_user"),
+    ROOM_ALERT("room_alert");
 
     private final String rawHeader;
 

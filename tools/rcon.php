@@ -11,6 +11,7 @@ $commands = [
     'refresh_motto'   => ['userId'],
     'user_alert'      => ['userId', 'message', 'sender'],
     'disconnect_user' => ['userId'],
+    'room_alert'      => ['roomId', 'message', 'sender'],
 ];
 
 $result = null;
