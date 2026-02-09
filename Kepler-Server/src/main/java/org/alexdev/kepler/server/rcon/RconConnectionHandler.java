@@ -130,6 +130,24 @@ public class RconConnectionHandler extends ChannelInboundHandlerAdapter {
                     }
 
                     break;
+                case USER_ALERT:
+                    online = PlayerManager.getInstance().getPlayerById(Integer.parseInt(message.getValues().get("userId")));
+
+                    if (online != null) {
+                        StringBuilder userAlert = new StringBuilder();
+                        userAlert.append(message.getValues().get("message"));
+
+                        if (message.getValues().containsKey("sender")) {
+                            String messageSender = message.getValues().get("sender");
+                            userAlert.append("<br>");
+                            userAlert.append("<br>");
+                            userAlert.append("- ").append(messageSender);
+                        }
+
+                        online.send(new ALERT(userAlert.toString()));
+                    }
+
+                    break;
             }
         } catch (Exception ex) {
             Log.getErrorLogger().error("[RCON] Error occurred when handling RCON message: ", ex);
