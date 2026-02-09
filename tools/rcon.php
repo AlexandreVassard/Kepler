@@ -9,6 +9,7 @@ $commands = [
     'refresh_hand'    => ['userId'],
     'refresh_credits' => ['userId'],
     'refresh_motto'   => ['userId'],
+    'user_alert'      => ['userId', 'message', 'sender'],
 ];
 
 $result = null;
