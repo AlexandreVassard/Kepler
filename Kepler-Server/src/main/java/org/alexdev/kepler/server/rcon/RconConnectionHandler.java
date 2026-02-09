@@ -10,6 +10,8 @@ import org.alexdev.kepler.game.player.PlayerDetails;
 import org.alexdev.kepler.game.player.PlayerManager;
 import org.alexdev.kepler.log.Log;
 import org.alexdev.kepler.messages.outgoing.user.ALERT;
+import org.alexdev.kepler.messages.outgoing.rooms.user.FIGURE_CHANGE;
+import org.alexdev.kepler.messages.outgoing.user.USER_OBJECT;
 import org.alexdev.kepler.messages.outgoing.user.currencies.CREDIT_BALANCE;
 import org.alexdev.kepler.server.rcon.messages.RconMessage;
 import org.slf4j.Logger;
@@ -110,6 +112,21 @@ public class RconConnectionHandler extends ChannelInboundHandlerAdapter {
                     if (online != null) {
                         online.getDetails().setCredits(CurrencyDao.getCredits(online.getDetails().getId()));
                         online.send(new CREDIT_BALANCE(online.getDetails()));
+                    }
+
+                    break;
+                case REFRESH_MOTTO:
+                    online = PlayerManager.getInstance().getPlayerById(Integer.parseInt(message.getValues().get("userId")));
+
+                    if (online != null) {
+                        PlayerDetails newDetails = PlayerDao.getDetails(online.getDetails().getId());
+                        online.getDetails().setMotto(newDetails.getMotto());
+
+                        online.send(new USER_OBJECT(online.getDetails()));
+
+                        if (online.getRoomUser().getRoom() != null) {
+                            online.getRoomUser().getRoom().send(new FIGURE_CHANGE(online.getRoomUser().getInstanceId(), online.getDetails()));
+                        }
                     }
 
                     break;
