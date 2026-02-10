@@ -13,7 +13,8 @@ public enum RconHeader {
     REFRESH_CATALOGUE("refresh_catalogue"),
     KICK_USER("kick_user"),
     MUTE_USER("mute_user"),
-    UNMUTE_USER("unmute_user");
+    UNMUTE_USER("unmute_user"),
+    MASS_EVENT("mass_event");
 
     private final String rawHeader;
 
