@@ -16,6 +16,7 @@ import org.alexdev.kepler.messages.outgoing.catalogue.CATALOGUE_PAGES;
 import org.alexdev.kepler.messages.outgoing.user.ALERT;
 import org.alexdev.kepler.messages.outgoing.rooms.user.FIGURE_CHANGE;
 import org.alexdev.kepler.messages.outgoing.user.USER_OBJECT;
+import org.alexdev.kepler.messages.outgoing.rooms.user.HOTEL_VIEW;
 import org.alexdev.kepler.messages.outgoing.user.currencies.CREDIT_BALANCE;
 import org.alexdev.kepler.server.rcon.messages.RconMessage;
 import org.slf4j.Logger;
@@ -175,6 +176,15 @@ public class RconConnectionHandler extends ChannelInboundHandlerAdapter {
                         }
 
                         room.send(new ALERT(roomAlert.toString()));
+                    }
+
+                    break;
+                case KICK_USER:
+                    online = PlayerManager.getInstance().getPlayerById(Integer.parseInt(message.getValues().get("userId")));
+
+                    if (online != null && online.getRoomUser().getRoom() != null) {
+                        online.getRoomUser().kick(false);
+                        online.send(new HOTEL_VIEW());
                     }
 
                     break;

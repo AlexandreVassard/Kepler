@@ -13,6 +13,7 @@ $commands = [
     'disconnect_user' => ['userId'],
     'room_alert'      => ['roomId', 'message', 'sender'],
     'refresh_catalogue' => [],
+    'kick_user'         => ['userId'],
 ];
 
 $result = null;
