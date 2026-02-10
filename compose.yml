@@ -10,7 +10,6 @@ services:
         condition: service_healthy
     ports:
       - "${SERVER_PORT}:${SERVER_PORT}"
-      - "${RCON_PORT}:${RCON_PORT}"
       - "${MUS_PORT}:${MUS_PORT}"
   mariadb:
     image: mariadb:11.4
