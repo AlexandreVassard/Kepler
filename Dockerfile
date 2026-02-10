@@ -2,7 +2,7 @@
 # BUILD STAGE #
 ###############
 
-FROM alpine:3.20 AS build
+FROM alpine:3.23 AS build
 
 RUN apk add --no-cache openjdk17 unzip
 
@@ -35,7 +35,7 @@ RUN sed -i 's/\r$//' tools/scripts/run.sh && \
 # PRODUCTION STAGE #
 ####################
 
-FROM alpine:3.20
+FROM alpine:3.23
 
 RUN apk add --no-cache openjdk17-jre-headless && \
     addgroup -S kepler && adduser -S kepler -G kepler && \
