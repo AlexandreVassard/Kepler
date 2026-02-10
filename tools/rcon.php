@@ -15,6 +15,7 @@ $commands = [
     'refresh_catalogue' => [],
     'kick_user'         => ['userId'],
     'mute_user'         => ['userId', 'minutes'],
+    'unmute_user'       => ['userId'],
 ];
 
 $result = null;
