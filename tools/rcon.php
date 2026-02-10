@@ -16,6 +16,7 @@ $commands = [
     'kick_user'         => ['userId'],
     'mute_user'         => ['userId', 'minutes'],
     'unmute_user'       => ['userId'],
+    'mass_event'        => ['roomId'],
 ];
 
 $result = null;

@@ -206,6 +206,16 @@ public class RconConnectionHandler extends ChannelInboundHandlerAdapter {
                     }
 
                     break;
+                case MASS_EVENT:
+                    Room eventRoom = RoomManager.getInstance().getRoomById(Integer.parseInt(message.getValues().get("roomId")));
+
+                    if (eventRoom != null) {
+                        for (Player player : PlayerManager.getInstance().getPlayers()) {
+                            eventRoom.forward(player, false);
+                        }
+                    }
+
+                    break;
                 case REFRESH_CATALOGUE:
                     CatalogueManager.reset();
 
