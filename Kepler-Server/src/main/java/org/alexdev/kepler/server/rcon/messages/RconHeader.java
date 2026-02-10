@@ -12,7 +12,8 @@ public enum RconHeader {
     ROOM_ALERT("room_alert"),
     REFRESH_CATALOGUE("refresh_catalogue"),
     KICK_USER("kick_user"),
-    MUTE_USER("mute_user");
+    MUTE_USER("mute_user"),
+    UNMUTE_USER("unmute_user");
 
     private final String rawHeader;
 

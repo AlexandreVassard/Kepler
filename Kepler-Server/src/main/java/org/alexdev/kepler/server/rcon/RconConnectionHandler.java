@@ -198,6 +198,14 @@ public class RconConnectionHandler extends ChannelInboundHandlerAdapter {
                     }
 
                     break;
+                case UNMUTE_USER:
+                    online = PlayerManager.getInstance().getPlayerById(Integer.parseInt(message.getValues().get("userId")));
+
+                    if (online != null && online.getRoomUser().getRoom() != null) {
+                        online.getRoomUser().setMuteTime(0);
+                    }
+
+                    break;
                 case REFRESH_CATALOGUE:
                     CatalogueManager.reset();
 
