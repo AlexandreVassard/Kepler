@@ -19,6 +19,7 @@ import org.alexdev.kepler.messages.outgoing.user.USER_OBJECT;
 import org.alexdev.kepler.messages.outgoing.rooms.user.HOTEL_VIEW;
 import org.alexdev.kepler.messages.outgoing.user.currencies.CREDIT_BALANCE;
 import org.alexdev.kepler.server.rcon.messages.RconMessage;
+import org.alexdev.kepler.util.DateUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -185,6 +186,15 @@ public class RconConnectionHandler extends ChannelInboundHandlerAdapter {
                     if (online != null && online.getRoomUser().getRoom() != null) {
                         online.getRoomUser().kick(false);
                         online.send(new HOTEL_VIEW());
+                    }
+
+                    break;
+                case MUTE_USER:
+                    online = PlayerManager.getInstance().getPlayerById(Integer.parseInt(message.getValues().get("userId")));
+
+                    if (online != null && online.getRoomUser().getRoom() != null) {
+                        int minutes = Integer.parseInt(message.getValues().get("minutes"));
+                        online.getRoomUser().setMuteTime(DateUtil.getCurrentTimeSeconds() + (minutes * 60L));
                     }
 
                     break;

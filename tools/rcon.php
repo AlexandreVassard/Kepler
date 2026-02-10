@@ -14,6 +14,7 @@ $commands = [
     'room_alert'      => ['roomId', 'message', 'sender'],
     'refresh_catalogue' => [],
     'kick_user'         => ['userId'],
+    'mute_user'         => ['userId', 'minutes'],
 ];
 
 $result = null;
