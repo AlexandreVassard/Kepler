@@ -47,4 +47,7 @@ COPY --from=build --chown=kepler:kepler /kepler/build ./
 
 USER kepler
 
+HEALTHCHECK --interval=10s --timeout=5s --start-period=15s --retries=3 \
+  CMD cat /proc/net/tcp /proc/net/tcp6 2>/dev/null | grep -q ":$(printf '%04X' ${SERVER_PORT:-12321}) "
+
 CMD ["sh", "run.sh"]
