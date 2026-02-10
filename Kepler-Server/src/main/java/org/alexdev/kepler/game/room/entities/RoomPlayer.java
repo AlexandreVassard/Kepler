@@ -41,6 +41,10 @@ public class RoomPlayer extends RoomEntity {
     private int chatSpamTicks = 16;
     private long muteTime;
 
+    public void setMuteTime(long muteTime) {
+        this.muteTime = muteTime;
+    }
+
     public RoomPlayer(Player player) {
         super(player);
         this.player = player;
