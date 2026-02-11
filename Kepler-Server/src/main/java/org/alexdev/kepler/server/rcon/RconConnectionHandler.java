@@ -22,6 +22,8 @@ import org.alexdev.kepler.messages.outgoing.rooms.user.HOTEL_VIEW;
 import org.alexdev.kepler.messages.outgoing.user.currencies.CREDIT_BALANCE;
 import org.alexdev.kepler.server.rcon.messages.RconMessage;
 import org.alexdev.kepler.util.DateUtil;
+import org.alexdev.kepler.util.config.GameConfiguration;
+import org.alexdev.kepler.util.config.writer.GameConfigWriter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -234,6 +236,10 @@ public class RconConnectionHandler extends ChannelInboundHandlerAdapter {
                             online.getRoomUser().getRoom().send(new FIGURE_CHANGE(online.getRoomUser().getInstanceId(), online.getDetails()));
                         }
                     }
+
+                    break;
+                case RELOAD_SETTINGS:
+                    GameConfiguration.reset(new GameConfigWriter());
 
                     break;
                 case REFRESH_CATALOGUE:
