@@ -14,7 +14,8 @@ public enum RconHeader {
     KICK_USER("kick_user"),
     MUTE_USER("mute_user"),
     UNMUTE_USER("unmute_user"),
-    MASS_EVENT("mass_event");
+    MASS_EVENT("mass_event"),
+    REFRESH_BADGE("refresh_badge");
 
     private final String rawHeader;
 

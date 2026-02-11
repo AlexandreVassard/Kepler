@@ -13,6 +13,8 @@ import org.alexdev.kepler.game.player.PlayerDetails;
 import org.alexdev.kepler.game.player.PlayerManager;
 import org.alexdev.kepler.log.Log;
 import org.alexdev.kepler.messages.outgoing.catalogue.CATALOGUE_PAGES;
+import org.alexdev.kepler.messages.outgoing.rooms.badges.AVAILABLE_BADGES;
+import org.alexdev.kepler.messages.outgoing.rooms.badges.USER_BADGE;
 import org.alexdev.kepler.messages.outgoing.user.ALERT;
 import org.alexdev.kepler.messages.outgoing.rooms.user.FIGURE_CHANGE;
 import org.alexdev.kepler.messages.outgoing.user.USER_OBJECT;
@@ -212,6 +214,24 @@ public class RconConnectionHandler extends ChannelInboundHandlerAdapter {
                     if (eventRoom != null) {
                         for (Player player : PlayerManager.getInstance().getPlayers()) {
                             eventRoom.forward(player, false);
+                        }
+                    }
+
+                    break;
+                case REFRESH_BADGE:
+                    online = PlayerManager.getInstance().getPlayerById(Integer.parseInt(message.getValues().get("userId")));
+
+                    if (online != null) {
+                        PlayerDetails badgeDetails = PlayerDao.getDetails(online.getDetails().getId());
+                        online.getDetails().setCurrentBadge(badgeDetails.getCurrentBadge());
+                        online.getDetails().setShowBadge(badgeDetails.getShowBadge());
+                        online.getDetails().loadBadges();
+
+                        online.send(new AVAILABLE_BADGES(online.getDetails()));
+
+                        if (online.getRoomUser().getRoom() != null) {
+                            online.getRoomUser().getRoom().send(new USER_BADGE(online.getRoomUser().getInstanceId(), online.getDetails()));
+                            online.getRoomUser().getRoom().send(new FIGURE_CHANGE(online.getRoomUser().getInstanceId(), online.getDetails()));
                         }
                     }
 
