@@ -18,6 +18,7 @@ $commands = [
     'unmute_user'       => ['userId'],
     'mass_event'        => ['roomId'],
     'refresh_badge'     => ['userId'],
+    'reload_settings'   => [],
 ];
 
 $result = null;
