@@ -16,7 +16,8 @@ public enum RconHeader {
     UNMUTE_USER("unmute_user"),
     MASS_EVENT("mass_event"),
     REFRESH_BADGE("refresh_badge"),
-    RELOAD_SETTINGS("reload_settings");
+    RELOAD_SETTINGS("reload_settings"),
+    SHUTDOWN("shutdown");
 
     private final String rawHeader;
 

@@ -19,6 +19,7 @@ $commands = [
     'mass_event'        => ['roomId'],
     'refresh_badge'     => ['userId'],
     'reload_settings'   => [],
+    'shutdown'          => ['minutes'],
 ];
 
 $result = null;

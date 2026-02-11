@@ -28,6 +28,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.time.Duration;
 
 public class RconConnectionHandler extends ChannelInboundHandlerAdapter {
     final private static Logger log = LoggerFactory.getLogger(RconConnectionHandler.class);
@@ -41,17 +42,17 @@ public class RconConnectionHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelRegistered(ChannelHandlerContext ctx) {
         if (!this.server.getChannels().add(ctx.channel()) || Kepler.isShuttingdown()) {
-            //Log.getErrorLogger().error("Could not accept RCON connection from {}", ctx.channel().remoteAddress().toString().replace("/", "").split(":")[0]);
+            Log.getErrorLogger().error("Could not accept RCON connection from {}", ctx.channel().remoteAddress().toString().replace("/", "").split(":")[0]);
             ctx.close();
         }
 
-        //log.info("[RCON] Connection from {}", ctx.channel().remoteAddress().toString().replace("/", "").split(":")[0]);
+        log.info("[RCON] Connection from {}", ctx.channel().remoteAddress().toString().replace("/", "").split(":")[0]);
     }
 
     @Override
     public void channelUnregistered(ChannelHandlerContext ctx) {
         this.server.getChannels().remove(ctx.channel());
-        //log.info("[RCON] Disconnection from {}", ctx.channel().remoteAddress().toString().replace("/", "").split(":")[0]);
+        log.info("[RCON] Disconnection from {}", ctx.channel().remoteAddress().toString().replace("/", "").split(":")[0]);
     }
 
     @Override
@@ -61,7 +62,7 @@ public class RconConnectionHandler extends ChannelInboundHandlerAdapter {
         }
 
         RconMessage message = (RconMessage) msg;
-        //log.info("[RCON] Message received: " + message.getHeader());
+        log.info("[RCON] Message received: " + message.getHeader());
 
         try {
             switch (message.getHeader()) {
@@ -240,6 +241,11 @@ public class RconConnectionHandler extends ChannelInboundHandlerAdapter {
                     break;
                 case RELOAD_SETTINGS:
                     GameConfiguration.reset(new GameConfigWriter());
+
+                    break;
+                case SHUTDOWN:
+                    int shutdownMinutes = Integer.parseInt(message.getValues().get("minutes"));
+                    PlayerManager.getInstance().planMaintenance(Duration.ofMinutes(shutdownMinutes));
 
                     break;
                 case REFRESH_CATALOGUE:
