@@ -20,6 +20,7 @@ $commands = [
     'refresh_badge'     => ['userId'],
     'reload_settings'   => [],
     'shutdown'          => ['minutes'],
+    'shutdown_cancel'   => ['message'],
 ];
 
 $result = null;

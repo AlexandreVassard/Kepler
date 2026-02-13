@@ -248,6 +248,16 @@ public class RconConnectionHandler extends ChannelInboundHandlerAdapter {
                     PlayerManager.getInstance().planMaintenance(Duration.ofMinutes(shutdownMinutes));
 
                     break;
+                case SHUTDOWN_CANCEL:
+                    if (PlayerManager.getInstance().isMaintenance()) {
+                        String cancelMessage = message.getValues().containsKey("message")
+                                ? message.getValues().get("message")
+                                : null;
+
+                        PlayerManager.getInstance().cancelMaintenance(cancelMessage);
+                    }
+
+                    break;
                 case REFRESH_CATALOGUE:
                     CatalogueManager.reset();
 

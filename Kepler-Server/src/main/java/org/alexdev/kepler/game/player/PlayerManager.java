@@ -218,6 +218,15 @@ public class PlayerManager {
      * Cancel shutdown timeout
      */
     public void cancelMaintenance() {
+        cancelMaintenance(null);
+    }
+
+    /**
+     * Cancel shutdown timeout with optional custom message
+     *
+     * @param customMessage custom alert message, or null to use default
+     */
+    public void cancelMaintenance(String customMessage) {
         // Cancel current timeout
         this.shutdownTimeout.cancel(true);
 
@@ -225,8 +234,9 @@ public class PlayerManager {
         this.isMaintenanceShutdown = false;
 
         // Notify all users maintenance has been cancelled
+        String alertMessage = customMessage != null ? customMessage : TextsManager.getInstance().getValue("maintenance_cancelled");
         for (Player p : this.players) {
-            p.send(new ALERT(TextsManager.getInstance().getValue("maintenance_cancelled")));
+            p.send(new ALERT(alertMessage));
         }
     }
 
