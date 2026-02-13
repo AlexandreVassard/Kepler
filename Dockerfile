@@ -4,7 +4,7 @@
 
 FROM alpine:3.23 AS build
 
-RUN apk add --no-cache openjdk17 unzip
+RUN apk add --no-cache openjdk25 unzip
 
 WORKDIR /kepler
 
@@ -37,7 +37,7 @@ RUN sed -i 's/\r$//' tools/scripts/run.sh && \
 
 FROM alpine:3.23
 
-RUN apk add --no-cache openjdk17-jre-headless && \
+RUN apk add --no-cache openjdk25-jre-headless && \
     addgroup -S kepler && adduser -S kepler -G kepler && \
     mkdir /kepler && chown kepler:kepler /kepler
 
