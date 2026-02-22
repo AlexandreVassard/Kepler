@@ -13,6 +13,7 @@ import org.alexdev.kepler.game.player.PlayerDetails;
 import org.alexdev.kepler.game.player.PlayerManager;
 import org.alexdev.kepler.log.Log;
 import org.alexdev.kepler.messages.outgoing.catalogue.CATALOGUE_PAGES;
+import org.alexdev.kepler.messages.outgoing.messenger.ROOMFORWARD;
 import org.alexdev.kepler.messages.outgoing.rooms.badges.AVAILABLE_BADGES;
 import org.alexdev.kepler.messages.outgoing.rooms.badges.USER_BADGE;
 import org.alexdev.kepler.messages.outgoing.user.ALERT;
@@ -255,6 +256,16 @@ public class RconConnectionHandler extends ChannelInboundHandlerAdapter {
                                 : null;
 
                         PlayerManager.getInstance().cancelMaintenance(cancelMessage);
+                    }
+
+                    break;
+                case FORWARD:
+                    online = PlayerManager.getInstance().getPlayerById(Integer.parseInt(message.getValues().get("userId")));
+
+                    if (online != null) {
+                        boolean isPublic = message.getValues().get("type").equals("1");
+                        int roomId = Integer.parseInt(message.getValues().get("roomId"));
+                        online.send(new ROOMFORWARD(isPublic, roomId));
                     }
 
                     break;

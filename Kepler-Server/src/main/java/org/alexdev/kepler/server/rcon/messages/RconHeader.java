@@ -18,7 +18,8 @@ public enum RconHeader {
     REFRESH_BADGE("refresh_badge"),
     RELOAD_SETTINGS("reload_settings"),
     SHUTDOWN("shutdown"),
-    SHUTDOWN_CANCEL("shutdown_cancel");
+    SHUTDOWN_CANCEL("shutdown_cancel"),
+    FORWARD("forward");
 
     private final String rawHeader;
 

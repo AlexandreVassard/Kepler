@@ -21,6 +21,7 @@ $commands = [
     'reload_settings'   => [],
     'shutdown'          => ['minutes'],
     'shutdown_cancel'   => ['message'],
+    'forward'           => ['userId', 'type', 'roomId'],
 ];
 
 $result = null;
