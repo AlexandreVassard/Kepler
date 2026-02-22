@@ -71,9 +71,29 @@ function sendRcon(string $host, int $port, string $header, array $params): strin
     }
 
     @socket_send($socket, $buffer, strlen($buffer), MSG_DONTROUTE);
-    @socket_close($socket);
 
-    return "Sent '$header' with " . count($params) . " param(s)";
+    // Read status code (4 bytes) + message length (4 bytes) + message
+    $header = '';
+    while (strlen($header) < 8) {
+        $chunk = @socket_read($socket, 8 - strlen($header));
+        if ($chunk === false || $chunk === '') break;
+        $header .= $chunk;
+    }
+
+    $code = 0;
+    $response = '';
+    if (strlen($header) === 8) {
+        $code    = unpack('N', substr($header, 0, 4))[1];
+        $bodyLen = unpack('N', substr($header, 4, 4))[1];
+        while (strlen($response) < $bodyLen) {
+            $chunk = @socket_read($socket, $bodyLen - strlen($response));
+            if ($chunk === false || $chunk === '') break;
+            $response .= $chunk;
+        }
+    }
+
+    @socket_close($socket);
+    return $code > 0 ? "[$code] $response" : "Sent '$header' (no response)";
 }
 ?>
 <!DOCTYPE html>
@@ -102,7 +122,7 @@ function sendRcon(string $host, int $port, string $header, array $params): strin
 <h1>Kepler RCON</h1>
 
 <?php if ($result): ?>
-  <div class="result <?= str_starts_with($result, 'Sent') ? 'ok' : 'err' ?>"><?= htmlspecialchars($result) ?></div>
+  <div class="result <?= str_starts_with($result, '[2') ? 'ok' : 'err' ?>"><?= htmlspecialchars($result) ?></div>
 <?php endif; ?>
 
 <form method="post">
