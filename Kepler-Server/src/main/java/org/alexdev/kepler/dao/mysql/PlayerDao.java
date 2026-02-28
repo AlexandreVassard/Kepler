@@ -371,6 +371,23 @@ public class PlayerDao {
      *
      * @param details the details of the user
      */
+    public static void resetOnlineStatus() {
+        Connection sqlConnection = null;
+        PreparedStatement preparedStatement = null;
+
+        try {
+            sqlConnection = Storage.getStorage().getConnection();
+            preparedStatement = Storage.getStorage().prepare("UPDATE users SET online = 0", sqlConnection);
+            preparedStatement.execute();
+
+        } catch (Exception e) {
+            Storage.logError(e);
+        } finally {
+            Storage.closeSilently(preparedStatement);
+            Storage.closeSilently(sqlConnection);
+        }
+    }
+
     public static void saveLastOnline(PlayerDetails details) {
         long currentTime = DateUtil.getCurrentTimeSeconds();
         details.setLastOnline(currentTime);
@@ -382,6 +399,25 @@ public class PlayerDao {
             sqlConnection = Storage.getStorage().getConnection();
             preparedStatement = Storage.getStorage().prepare("UPDATE users SET last_online = ? WHERE id = ?", sqlConnection);
             preparedStatement.setLong(1, currentTime);
+            preparedStatement.setInt(2, details.getId());
+            preparedStatement.execute();
+
+        } catch (Exception e) {
+            Storage.logError(e);
+        } finally {
+            Storage.closeSilently(preparedStatement);
+            Storage.closeSilently(sqlConnection);
+        }
+    }
+
+    public static void saveOnlineStatus(PlayerDetails details, boolean online) {
+        Connection sqlConnection = null;
+        PreparedStatement preparedStatement = null;
+
+        try {
+            sqlConnection = Storage.getStorage().getConnection();
+            preparedStatement = Storage.getStorage().prepare("UPDATE users SET online = ? WHERE id = ?", sqlConnection);
+            preparedStatement.setBoolean(1, online);
             preparedStatement.setInt(2, details.getId());
             preparedStatement.execute();
 

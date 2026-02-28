@@ -71,6 +71,7 @@ public class Player extends Entity {
         PlayerManager.getInstance().disconnectSession(this.details.getId()); // Kill other sessions with same id
         PlayerManager.getInstance().addPlayer(this); // Add new connection
         PlayerDao.saveLastOnline(this.getDetails());
+        PlayerDao.saveOnlineStatus(this.getDetails(), true);
 
         if (GameConfiguration.getInstance().getBoolean("reset.sso.after.login")) {
             PlayerDao.clearSSOTicket(this.details.getId()); // Protect against replay attacks
@@ -306,6 +307,7 @@ public class Player extends Entity {
                 PlayerManager.getInstance().removePlayer(this);
 
                 PlayerDao.saveLastOnline(this.getDetails());
+                PlayerDao.saveOnlineStatus(this.getDetails(), false);
                 SettingsDao.updateSetting("players.online", String.valueOf(PlayerManager.getInstance().getPlayers().size()));
 
                 if (this.messenger != null)
