@@ -248,10 +248,8 @@ public class RconConnectionHandler extends ChannelInboundHandlerAdapter {
                     return RconResponse.notFound("User");
                 }
 
-                if (online.getRoomUser().getRoom() != null) {
-                    int minutes = Integer.parseInt(message.getValues().get("minutes"));
-                    online.getRoomUser().setMuteTime(DateUtil.getCurrentTimeSeconds() + (minutes * 60L));
-                }
+                int minutes = Integer.parseInt(message.getValues().get("minutes"));
+                online.getRoomUser().setMuteTime(DateUtil.getCurrentTimeSeconds() + (minutes * 60L));
 
                 return RconResponse.ok();
             }
@@ -262,9 +260,7 @@ public class RconConnectionHandler extends ChannelInboundHandlerAdapter {
                     return RconResponse.notFound("User");
                 }
 
-                if (online.getRoomUser().getRoom() != null) {
-                    online.getRoomUser().setMuteTime(0);
-                }
+                online.getRoomUser().setMuteTime(0);
 
                 return RconResponse.ok();
             }
