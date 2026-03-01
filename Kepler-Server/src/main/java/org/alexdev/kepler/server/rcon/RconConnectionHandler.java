@@ -22,6 +22,7 @@ import org.alexdev.kepler.messages.outgoing.rooms.user.FIGURE_CHANGE;
 import org.alexdev.kepler.messages.outgoing.user.USER_OBJECT;
 import org.alexdev.kepler.messages.outgoing.rooms.user.HOTEL_VIEW;
 import org.alexdev.kepler.messages.outgoing.user.currencies.CREDIT_BALANCE;
+import org.alexdev.kepler.server.netty.NettyPlayerNetwork;
 import org.alexdev.kepler.server.rcon.messages.RconMessage;
 import org.alexdev.kepler.server.rcon.messages.RconResponse;
 import org.alexdev.kepler.util.DateUtil;
@@ -346,6 +347,51 @@ public class RconConnectionHandler extends ChannelInboundHandlerAdapter {
                 }
 
                 return RconResponse.ok();
+            }
+            case USER_INFO: {
+                Player online = PlayerManager.getInstance().getPlayerById(Integer.parseInt(message.getValues().get("userId")));
+
+                if (online == null) {
+                    return RconResponse.notFound("User");
+                }
+
+                boolean inRoom = online.getRoomUser().getRoom() != null;
+                int roomId = inRoom ? online.getRoomUser().getRoom().getId() : -1;
+                long muteTime = online.getRoomUser().getMuteTime();
+
+                String posX = inRoom ? String.valueOf(online.getRoomUser().getPosition().getX()) : "-1";
+                String posY = inRoom ? String.valueOf(online.getRoomUser().getPosition().getY()) : "-1";
+                String posZ = inRoom ? String.valueOf(online.getRoomUser().getPosition().getZ()) : "-1";
+
+                boolean isDiving = online.getRoomUser().isDiving();
+                boolean isWalking = online.getRoomUser().isWalking();
+
+                String statuses = String.join(",", online.getRoomUser().getStatuses().keySet());
+
+                Player tradePartner = online.getRoomUser().getTradePartner();
+                int tradePartnerId = tradePartner != null ? tradePartner.getDetails().getId() : -1;
+
+                String currentGameId = online.getRoomUser().getCurrentGameId() != null ? online.getRoomUser().getCurrentGameId() : "";
+                int observingGameId = online.getRoomUser().getObservingGameId();
+
+                String ip = NettyPlayerNetwork.getIpAddress(online.getNetwork().getChannel());
+                String ignoredList = String.join(",", online.getIgnoredList());
+
+                return new RconResponse(200,
+                        "roomId=" + roomId +
+                        ";muteTime=" + muteTime +
+                        ";posX=" + posX +
+                        ";posY=" + posY +
+                        ";posZ=" + posZ +
+                        ";isDiving=" + isDiving +
+                        ";isWalking=" + isWalking +
+                        ";statuses=" + statuses +
+                        ";tradePartnerId=" + tradePartnerId +
+                        ";currentGameId=" + currentGameId +
+                        ";observingGameId=" + observingGameId +
+                        ";ip=" + ip +
+                        ";ignoredList=" + ignoredList
+                );
             }
             default:
                 return RconResponse.error("Unknown command");

@@ -19,7 +19,8 @@ public enum RconHeader {
     RELOAD_SETTINGS("reload_settings"),
     SHUTDOWN("shutdown"),
     SHUTDOWN_CANCEL("shutdown_cancel"),
-    FORWARD("forward");
+    FORWARD("forward"),
+    USER_INFO("user_info");
 
     private final String rawHeader;
 

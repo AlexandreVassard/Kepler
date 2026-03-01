@@ -45,6 +45,10 @@ public class RoomPlayer extends RoomEntity {
         this.muteTime = muteTime;
     }
 
+    public long getMuteTime() {
+        return muteTime;
+    }
+
     public RoomPlayer(Player player) {
         super(player);
         this.player = player;

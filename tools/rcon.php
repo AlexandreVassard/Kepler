@@ -22,6 +22,7 @@ $commands = [
     'shutdown'          => ['minutes'],
     'shutdown_cancel'   => ['message'],
     'forward'           => ['userId', 'type', 'roomId'],
+    'user_info'         => ['userId'],
 ];
 
 $result = null;
